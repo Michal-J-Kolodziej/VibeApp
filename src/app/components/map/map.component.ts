@@ -27,7 +27,9 @@ export class MapComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
-      const L = await import('leaflet');
+      const leafletModule = await import('leaflet');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const L = (leafletModule as any).default || leafletModule;
       this.mapService.fixLeafletIcons(L);
       this.initMap(L);
     }
