@@ -1,0 +1,25 @@
+@if (post) {
+  <div class="container page-content">
+    <mat-card class="post-detail-card">
+      <img mat-card-image [src]="post.imageUrl" [alt]="post.title" class="post-image">
+      <mat-card-header>
+        <mat-card-title>{{ post.title }}</mat-card-title>
+        <mat-card-subtitle>Posted on {{ post.createdAt | date:'mediumDate' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="post-description">{{ post.description }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button routerLink="/map">Back to Map</a>
+        <button mat-raised-button color="primary">Contact Seller</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+} @else {
+  <div class="container page-content text-center">
+    <h1>Post not found</h1>
+    <p>The item you are looking for does not exist or has been removed.</p>
+    <a mat-raised-button color="primary" routerLink="/map">Back to Map</a>
+  </div>
+}
+

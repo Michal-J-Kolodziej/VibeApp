@@ -1,0 +1,71 @@
+<div class="container page-content">
+  <h1 class="page-title">Post an Item</h1>
+  
+  <div class="create-layout">
+    <mat-card class="create-form-card">
+      <mat-card-content>
+        <form (ngSubmit)="onSubmit()" class="create-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput id="title" type="text" [ngModel]="title()" (ngModelChange)="title.set($event)" name="title" placeholder="e.g. Vintage Sofa" required>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput id="description" [ngModel]="description()" (ngModelChange)="description.set($event)" name="description" rows="4" placeholder="Describe the item..." required></textarea>
+          </mat-form-field>
+          
+          <div class="form-group">
+            <label for="imageUrl" class="mat-subtitle-2">Image</label>
+            
+            <!-- Image Preview -->
+            @if (imagePreview()) {
+              <div class="image-preview-container">
+                <img [src]="imagePreview()" alt="Preview" class="image-preview">
+                <button mat-icon-button type="button" class="btn-clear" (click)="clearImage()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            }
+            
+            <!-- File Upload -->
+            @if (!imagePreview()) {
+              <div class="upload-section">
+                <input type="file" id="fileUpload" accept="image/*" (change)="onFileSelected($event)" class="file-input">
+                <label for="fileUpload" class="file-label mat-elevation-z2">
+                  <mat-icon>folder_open</mat-icon>
+                  <span>Choose Image from Device</span>
+                </label>
+                
+                <div class="divider">
+                  <span>OR</span>
+                </div>
+                
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Image URL</mat-label>
+                  <input matInput id="imageUrl" type="text" [ngModel]="imageUrl()" (ngModelChange)="imageUrl.set($event)" name="imageUrl" placeholder="Enter image URL">
+                </mat-form-field>
+              </div>
+            }
+          </div>
+          
+          <div class="form-group">
+            <span class="form-label mat-subtitle-2" id="locationLabel">Location</span>
+            <p class="help-text">Click on the map to set the location.</p>
+            <div class="location-display" aria-labelledby="locationLabel" role="region">
+              Lat: {{ lat() | number:'1.4-4' }}, 
+              Lng: {{ lng() | number:'1.4-4' }}
+            </div>
+          </div>
+          
+          <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="!isFormValid()">Post Item</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    
+    <div class="map-wrapper">
+      <div id="map-picker"></div>
+    </div>
+  </div>
+</div>
+

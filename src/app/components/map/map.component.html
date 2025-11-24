@@ -1,0 +1,23 @@
+<div class="map-container">
+  <div class="map-container">
+  @if (nearestPosts.length > 0) {
+    <div class="sidebar">
+      <h3>Nearest Items</h3>
+      <div class="nearest-items">
+        @for (post of nearestPosts; track post.id) {
+          <mat-card class="item-card" (click)="navigateToPost(post.id)" (keyup.enter)="navigateToPost(post.id)" tabindex="0" role="button">
+            <img mat-card-image [src]="post.imageUrl" [alt]="post.title" class="item-image">
+            <mat-card-content>
+              <h4>{{ post.title }}</h4>
+              <p class="item-distance">{{ post.distance.toFixed(1) }} km away</p>
+              <p class="item-description">{{ post.description }}</p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+  <div id="map" class="map"></div>
+</div>
+</div>
+

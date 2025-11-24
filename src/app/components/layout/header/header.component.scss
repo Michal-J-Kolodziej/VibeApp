@@ -1,0 +1,67 @@
+.header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 1.5rem;
+  
+  .highlight {
+    color: var(--primary-color);
+  }
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  a {
+    color: inherit;
+  }
+  
+  a.active {
+    color: var(--primary-color);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+  }
+}
+
+.user-avatar-small {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem !important;
+}
+
+@media (max-width: 600px) {
+  .user-name {
+    display: none;
+  }
+}

@@ -1,0 +1,47 @@
+<div class="profile-container">
+  @if (authService.currentUser(); as user) {
+    <div class="profile-header">
+      <div class="profile-info">
+        <img [src]="user.avatarUrl" [alt]="user.name" class="profile-avatar">
+        <div class="profile-details">
+          <h1>{{ user.name }}</h1>
+          <p class="profile-email">{{ user.email }}</p>
+          <p class="profile-joined">Member since {{ user.createdAt | date:'mediumDate' }}</p>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button mat-stroked-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Sign Out
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-content">
+      <h2>My Posts</h2>
+      
+      @if (userPosts().length > 0) {
+        <div class="posts-grid">
+          @for (post of userPosts(); track post.id) {
+            <mat-card class="post-card">
+              <img mat-card-image [src]="post.imageUrl" [alt]="post.title">
+              <mat-card-content>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.description }}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                <a mat-button color="primary" [routerLink]="['/post', post.id]">View</a>
+              </mat-card-actions>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">
+          <mat-icon>inventory_2</mat-icon>
+          <p>You haven't posted any items yet.</p>
+          <a mat-raised-button color="primary" routerLink="/create">Post an Item</a>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,47 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <div class="container header-content">
+    <a routerLink="/" class="logo">
+      <span class="logo-icon">♻️</span>
+      <span class="logo-text">Vibe<span class="highlight">App</span></span>
+    </a>
+
+    <span class="spacer"></span>
+
+    <nav class="nav">
+      <a mat-button routerLink="/map" routerLinkActive="active">Map</a>
+
+      @if (authService.isLoggedIn()) {
+        <a mat-button routerLink="/create" routerLinkActive="active">Post Item</a>
+      }
+
+      <button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
+        @if (themeService.isDarkMode()) {
+          <mat-icon>light_mode</mat-icon>
+        } @else {
+          <mat-icon>dark_mode</mat-icon>
+        }
+      </button>
+
+      @if (authService.currentUser(); as user) {
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+          <img [src]="user.avatarUrl" class="user-avatar-small" alt="Avatar">
+          <span class="user-name">{{ user.name }}</span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <a mat-menu-item routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </a>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Sign Out</span>
+          </button>
+        </mat-menu>
+      } @else {
+        <a mat-button routerLink="/login">Sign In</a>
+        <a mat-raised-button color="primary" routerLink="/register">Sign Up</a>
+      }
+    </nav>
+  </div>
+
