@@ -6,7 +6,11 @@
       <p class="hero-subtitle fade-in-up delay-1">Don't throw it away. Share it with your community. Find hidden treasures nearby.</p>
       <div class="hero-actions fade-in-up delay-2">
         <a mat-raised-button color="primary" routerLink="/map" class="btn-lg">Find Treasures Nearby</a>
-        <a mat-stroked-button routerLink="/create" class="btn-lg">Post an Item</a>
+        @if (authService.isLoggedIn()) {
+          <a mat-stroked-button routerLink="/create" class="btn-lg">Post an Item</a>
+        } @else {
+          <a mat-stroked-button routerLink="/register" class="btn-lg">Join to Post</a>
+        }
       </div>
     </div>
   </section>
@@ -57,7 +61,11 @@
     <div class="container cta-content">
       <h2>Ready to declutter?</h2>
       <p>Join thousands of neighbors exchanging furniture today.</p>
-      <a mat-raised-button color="primary" routerLink="/create" class="btn-lg">Start Posting Now</a>
+      @if (authService.isLoggedIn()) {
+        <a mat-raised-button color="primary" routerLink="/create" class="btn-lg">Start Posting Now</a>
+      } @else {
+        <a mat-raised-button color="primary" routerLink="/register" class="btn-lg">Join Now</a>
+      }
     </div>
   </section>
 </div>
