@@ -12,6 +12,9 @@
 
       @if (authService.isLoggedIn()) {
         <a mat-button routerLink="/create" routerLinkActive="active">Post Item</a>
+        <a mat-icon-button routerLink="/messages" routerLinkActive="active" aria-label="Messages">
+          <mat-icon>chat</mat-icon>
+        </a>
       }
 
       <button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">

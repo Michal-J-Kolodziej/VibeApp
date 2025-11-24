@@ -11,7 +11,9 @@
       </mat-card-content>
       <mat-card-actions>
         <a mat-button routerLink="/map">Back to Map</a>
-        <button mat-raised-button color="primary">Contact Seller</button>
+        @if (post.userId !== authService.currentUser()?.id) {
+          <button mat-raised-button color="primary" (click)="contactSeller()">Contact Seller</button>
+        }
       </mat-card-actions>
     </mat-card>
   </div>

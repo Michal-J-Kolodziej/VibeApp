@@ -1,0 +1,22 @@
+<div class="container page-content">
+  <h2>Messages</h2>
+  
+  <mat-list>
+    @for (chat of chats; track chat.id) {
+      <mat-list-item [routerLink]="['/messages', chat.id]" class="chat-item">
+        <img matListItemAvatar [src]="getOtherParticipantAvatar(chat)" alt="Avatar">
+        <span matListItemTitle>{{ getOtherParticipantName(chat) }}</span>
+        <span matListItemLine class="last-message">{{ chat.lastMessage || 'No messages yet' }}</span>
+        <span matListItemMeta>{{ chat.updatedAt | date:'short' }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">chat_bubble_outline</mat-icon>
+        <p>No messages yet.</p>
+        <p>Contact a seller to start a conversation!</p>
+        <a mat-raised-button color="primary" routerLink="/map">Browse Items</a>
+      </div>
+    }
+  </mat-list>
+</div>

@@ -8,6 +8,9 @@ import { PostCreateComponent } from './components/post-create/post-create.compon
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
+import { ChatDetailComponent } from './components/chat/chat-detail/chat-detail';
+import { ChatListComponent } from './components/chat/chat-list/chat-list';
+
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'map', component: MapComponent },
@@ -16,5 +19,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: UserProfileComponent, canActivate: [authGuard] },
+  { path: 'messages', component: ChatListComponent, canActivate: [authGuard] },
+  { path: 'messages/:id', component: ChatDetailComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
 ];

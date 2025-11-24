@@ -1,0 +1,30 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <a mat-icon-button routerLink="/messages">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h2>Chat</h2>
+  </div>
+
+  <div class="messages-list" #scrollContainer>
+    @for (msg of messages(); track msg.id) {
+      <div class="message-bubble" [class.my-message]="isMyMessage(msg)" [class.other-message]="!isMyMessage(msg)">
+        <div class="message-text">{{ msg.text }}</div>
+        <div class="message-time">{{ msg.timestamp | date:'shortTime' }}</div>
+      </div>
+    } @empty {
+      <div class="empty-chat">
+        <p>No messages yet. Say hello!</p>
+      </div>
+    }
+  </div>
+
+  <div class="chat-input">
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message...">
+      <button mat-icon-button matSuffix (click)="sendMessage()" [disabled]="!newMessage().trim()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</div>
