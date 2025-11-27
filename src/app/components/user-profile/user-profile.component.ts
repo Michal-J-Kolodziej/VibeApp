@@ -27,12 +27,12 @@ export class UserProfileComponent implements OnInit {
 
   userPosts = signal<Post[]>([]);
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // In a real app, we'd fetch posts by userId from the backend
     // For this mock, we'll just filter all posts (assuming we add userId to posts later)
     // Since we haven't added userId to posts yet, this will be empty or show all for now
     // Let's just show all posts for demo purposes until we update Post model
-    this.userPosts.set(this.postService.getPosts()); 
+    this.userPosts.set(await this.postService.getPosts()); 
   }
 
   logout(): void {

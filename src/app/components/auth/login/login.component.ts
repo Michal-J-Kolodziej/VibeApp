@@ -31,13 +31,13 @@ export class LoginComponent {
   password = signal(''); // Mock password for UI, not used in mock auth
   error = signal('');
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.email()) {
       this.error.set('Please enter your email');
       return;
     }
 
-    const success = this.authService.login(this.email());
+    const success = await this.authService.login(this.email());
     if (success) {
       this.router.navigate(['/map']);
     } else {

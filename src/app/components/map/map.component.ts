@@ -49,8 +49,8 @@ export class MapComponent implements AfterViewInit {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private addMarkers(L: any): void {
-    const posts = this.postService.getPosts();
+  private async addMarkers(L: any): Promise<void> {
+    const posts = await this.postService.getPosts();
     posts.forEach(post => {
       if (this.map) {
         const marker = L.marker([post.lat, post.lng]).addTo(this.map);
@@ -112,10 +112,10 @@ export class MapComponent implements AfterViewInit {
     return value * Math.PI / 180;
   }
 
-  private calculateNearestPosts(): void {
+  private async calculateNearestPosts(): Promise<void> {
     if (!this.userLocation) return;
 
-    const posts = this.postService.getPosts();
+    const posts = await this.postService.getPosts();
     const postsWithDistance = posts.map(post => ({
       ...post,
       distance: this.calculateDistance(

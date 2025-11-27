@@ -1,75 +1,62 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Injectable, PLATFORM_ID, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Post } from '../models/post.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private readonly STORAGE_KEY = 'furniture_posts';
-  
-  private platformId = inject(PLATFORM_ID);
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/posts';
 
-  constructor() {
-    this.initializeMockData();
+  constructor() {}
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getPosts(): Post[] {
-    if (!isPlatformBrowser(this.platformId)) {
+  async getPosts(): Promise<Post[]> {
+    try {
+      const posts = await firstValueFrom(
+        this.http.get<Post[]>(this.apiUrl)
+      );
+      return posts.map(post => ({
+        ...post,
+        createdAt: new Date(post.createdAt)
+      }));
+    } catch (error) {
+      console.error('Error fetching posts:', error);
       return [];
     }
-    const postsJson = localStorage.getItem(this.STORAGE_KEY);
-    return postsJson ? JSON.parse(postsJson) : [];
   }
 
-  addPost(post: Post): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
+  async addPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<void> {
+    try {
+      await firstValueFrom(
+        this.http.post(this.apiUrl, post, { headers: this.getHeaders() })
+      );
+    } catch (error) {
+      console.error('Error adding post:', error);
     }
-    const posts = this.getPosts();
-    posts.push(post);
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
   }
 
-  getPost(id: string): Post | undefined {
-    return this.getPosts().find(p => p.id === id);
-  }
-
-  private initializeMockData() {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    if (!localStorage.getItem(this.STORAGE_KEY)) {
-      const mockPosts: Post[] = [
-        {
-          id: '1',
-          title: 'Vintage Sofa',
-          description: 'A beautiful vintage sofa in good condition. Must pick up.',
-          imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80',
-          lat: 51.505,
-          lng: -0.09,
-          createdAt: new Date()
-        },
-        {
-          id: '2',
-          title: 'Wooden Table',
-          description: 'Solid oak table, slightly scratched surface.',
-          imageUrl: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1771&q=80',
-          lat: 51.51,
-          lng: -0.1,
-          createdAt: new Date()
-        },
-        {
-          id: '3',
-          title: 'Office Chair',
-          description: 'Ergonomic office chair, black.',
-          imageUrl: 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80',
-          lat: 51.515,
-          lng: -0.09,
-          createdAt: new Date()
-        }
-      ];
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(mockPosts));
+  async getPost(id: string): Promise<Post | undefined> {
+    try {
+      const post = await firstValueFrom(
+        this.http.get<Post>(`${this.apiUrl}/post/${id}`)
+      );
+      if (post) {
+        return {
+          ...post,
+          createdAt: new Date(post.createdAt)
+        };
+      }
+      return undefined;
+    } catch (error) {
+      console.error('Error fetching post:', error);
+      return undefined;
     }
   }
 }

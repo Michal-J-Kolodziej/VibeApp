@@ -33,13 +33,13 @@ export class RegisterComponent {
   confirmPassword = signal('');
   error = signal('');
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.password() !== this.confirmPassword()) {
       this.error.set('Passwords do not match');
       return;
     }
 
-    const success = this.authService.register(this.name(), this.email());
+    const success = await this.authService.register(this.name(), this.email(), this.password());
     if (success) {
       this.router.navigate(['/map']);
     } else {

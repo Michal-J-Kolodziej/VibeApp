@@ -25,10 +25,10 @@ export class PostDetailComponent implements OnInit {
   private chatService = inject(ChatService);
   public authService = inject(AuthService);
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.post = this.postService.getPost(id);
+      this.post = await this.postService.getPost(id);
     }
   }
 
