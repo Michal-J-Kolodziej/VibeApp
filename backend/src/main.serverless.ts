@@ -7,6 +7,7 @@ let app: any;
 export default async function handler(req: any, res: any) {
   if (!app) {
     app = await NestFactory.create(AppModule);
+    app.setGlobalPrefix('api');
     app.enableCors();
     
     const prismaService = app.get(PrismaService);

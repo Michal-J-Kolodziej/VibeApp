@@ -4,13 +4,15 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { User } from '../models/user.model';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'http://localhost:3000/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   
   // State
   private currentUserSignal = signal<User | null>(null);
