@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/src/main.serverless.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/vibe-app/browser"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/src/main.serverless.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/vibe-app/browser/index.html"
+    }
+  ]
+}
