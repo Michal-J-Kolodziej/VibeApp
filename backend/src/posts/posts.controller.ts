@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    NotFoundException,
     Param,
     Post,
     Request,
@@ -9,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Post as PostModel } from '@prisma/client';
+import { CreatePostDto } from './dto/create-post.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -17,7 +19,11 @@ export class PostsController {
 
   @Get('post/:id')
   async getPostById(@Param('id') id: string): Promise<PostModel> {
-    return this.postsService.post({ id });
+    const post = await this.postsService.post({ id });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return post;
   }
 
   @Get()
@@ -30,16 +36,15 @@ export class PostsController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   async createPost(
-    @Body() postData: { title: string; description: string; imageUrl?: string; lat: number; lng: number },
+    @Body() createPostDto: CreatePostDto,
     @Request() req,
   ): Promise<PostModel> {
-    const { title, description, imageUrl, lat, lng } = postData;
     return this.postsService.createPost({
-      title,
-      description,
-      imageUrl,
-      lat,
-      lng,
+      title: createPostDto.title,
+      description: createPostDto.description,
+      imageUrl: createPostDto.imageUrl,
+      lat: createPostDto.lat,
+      lng: createPostDto.lng,
       user: {
         connect: { id: req.user.userId },
       },

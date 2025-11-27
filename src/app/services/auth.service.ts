@@ -61,9 +61,23 @@ export class AuthService {
         return true;
       }
       return false;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error registering:', error);
-      return false;
+      
+      // Return user-friendly error message
+      if (error.status === 409) {
+        throw new Error('Email already registered');
+      } else if (error.status === 400 && error.error?.message) {
+        // Validation errors
+        const message = Array.isArray(error.error.message) 
+          ? error.error.message.join(', ') 
+          : error.error.message;
+        throw new Error(message);
+      } else if (error.status === 0) {
+        throw new Error('Cannot connect to server. Please try again later.');
+      }
+      
+      throw new Error('Registration failed. Please try again.');
     }
   }
 

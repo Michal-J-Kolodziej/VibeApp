@@ -33,8 +33,11 @@
           <input matInput type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" name="confirmPassword" required>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" class="full-width btn-submit" [disabled]="!registerForm.form.valid">
-          Sign Up
+        <button mat-raised-button color="primary" type="submit" class="full-width btn-submit" [disabled]="!registerForm.form.valid || loading()">
+          @if (loading()) {
+            <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+          }
+          {{ loading() ? 'Creating account...' : 'Sign Up' }}
         </button>
 
         <div class="divider">
